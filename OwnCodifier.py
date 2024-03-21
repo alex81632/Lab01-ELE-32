@@ -1,63 +1,26 @@
-def hamming_like_encoder(data):
-    # Calcular o número de bits de paridade
-    m = 3
-    # Calcular o tamanho total da palavra-código
-    n = len(data) + m
+import numpy as np
 
-    # Criar uma tabela de verificação de paridade
-    parity_positions = [0, 1, 3]
+class OwnCodifier:
+    def __init__(self):
+        pass
 
-    # Inicializar a palavra-código com todos os bits como 0
-    codeword = [0] * n
+    def codify(self, data):
+        codeword = [0] * 9
 
-    # Preencher os bits de dados na palavra-código
-    codeword[2] = data[0]
-    codeword[4] = data[1]
-    codeword[5] = data[2]
-    codeword[6] = data[3]
+        # Preencher os bits de dados na palavra-código
+        codeword[0] = data[0]
+        codeword[1] = data[1]
+        codeword[2] = data[2]
+        codeword[3] = data[3]
+        codeword[4] = data[4]
 
-    # Calcular os bits de paridade
-    for i in range(m):
-        # Calcular a soma de verificação de paridade para a posição atual
-        xor_sum = 0
-        for j in range(n):
-            if j & (1 << i):
-                xor_sum ^= codeword[j - 1]
-        codeword[parity_positions[i] - 1] = xor_sum
+        # Calcular os bits de paridade
+        xor_sum1 = data[0] ^ data[1] ^ data[2]
+        xor_sum2 = data[1] ^ data[2] ^ data[3]
+        xor_sum3 = data[2] ^ data[3] ^ data[4]
+        codeword[5] = xor_sum1
+        codeword[6] = xor_sum2
+        codeword[7] = xor_sum3
+        codeword[8] = xor_sum1 ^ xor_sum2 ^ xor_sum3
 
-    return codeword
-
-# Exemplo de uso
-data_input = [1, 0, 1, 0]  # 4 bits de dados
-encoded_codeword = hamming_like_encoder(data_input)
-print("Palavra-código codificada:", encoded_codeword)
-
-def hamming_like_decoder(codeword):
-    # Calcular o número de bits de paridade
-    m = 3
-    # Calcular o tamanho total da palavra-código
-    n = len(codeword)
-
-    # Criar uma tabela de verificação de paridade
-    parity_positions = [0, 1, 3]
-
-    # Verificar a paridade da palavra-código
-    error_position = 0
-    for i in range(m):
-        xor_sum = 0
-        for j in range(n):
-            if j & (1 << i):
-                xor_sum ^= codeword[j - 1]
-        if xor_sum != codeword[parity_positions[i] - 1]:
-            error_position += parity_positions[i]
-
-    # Se a posição do erro for diferente de zero, um erro foi detectado
-    if error_position != 0:
-        print("Erro detectado na posição:", error_position)
-    else:
-        print("Nenhum erro detectado.")
-
-# Exemplo de uso
-received_codeword = [0, 0, 1, 0, 0, 1, 1]  # Palavra-código recebida
-hamming_like_decoder(received_codeword)
-
+        return codeword

@@ -5,7 +5,7 @@ import HammingDecodifier
 if __name__ == "__main__":
     u = [1, 0, 1, 1]
     hc = HammingCodifier.HammingCodifier()
-    cBSC = CanalBSC.CanalBSC(0.2)
+    cBSC = CanalBSC.CanalBSC(0.5)
     hd = HammingDecodifier.HammingDecodifier()
     v = hc.codify(u)
     print(v)
