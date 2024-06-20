@@ -12,6 +12,7 @@ class HammingDecodifier:
 
     def decodify(self, r):
         self.s = np.matmul(r, self.HT)
+        print(self.s)
         for i in range(len(self.s)):
             if self.s[i] % 2 == 0:
                 self.s[i] = 0
